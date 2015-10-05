@@ -62,6 +62,7 @@ AudioHandler.prototype.applyEffect = function(effect) {
     this.currentNode.disconnect();
     this.currentNode.connect(effect);
     this.currentNode = effect;
+    console.log(this.currentNode);
     this.currentNode.connect(this.analyser);
 };
 
@@ -79,7 +80,7 @@ AudioHandler.prototype.resetEffects = function() {
 AudioHandler.prototype.changeFilter = function(currentFilter) {
     console.log(currentFilter);
     if (currentFilter == 'biquad')
-    this.addBiQuadFilter('highpass', 400);
+    this.addBiQuadFilter('lowpass', 200);
 else
     console.log('No filter selected');
 };
