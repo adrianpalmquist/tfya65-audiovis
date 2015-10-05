@@ -1,7 +1,8 @@
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+var app;
 
 window.onload = function() {
-    var app = new App();
+    app = new App();
     app.loadFile();
 };
 
