@@ -3,6 +3,7 @@ var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 window.onload = function() {
     var app = new App();
     app.loadFile();
+    
 };
 
 var App = function() {
