@@ -5,13 +5,42 @@ var AudioHandler = function(analyser) {
     this.source.connect(this.analyser);
     this.analyser.connect(audioCtx.destination);
     this.currentNode = this.source;
+    this.isPlaying = false;
+    this.startTime = 0;
+    this.startOffset = 0;
+    this.bufferDuration = 0;
+    this.buffer;
 };
 
 AudioHandler.prototype.playSound = function(buffer) {
     this.source.buffer = buffer; // Attatch our Audio Data as it's Buffer
+    this.buffer = buffer;
+    this.bufferDuration = buffer.duration;
     //source.loop = true;
     //source.connect(audioCtx.destination); // Link the Sound to the Output
     this.source.start(0);
+    this.isPlaying = true;
+};
+
+AudioHandler.prototype.togglePlayback = function() {
+    if(this.isPlaying) {
+        // Stop playback
+        this.source[this.source.stop ? 'stop': 'noteOff'](0);
+        this.startOffset += audioCtx.currentTime - this.startTime;
+
+    } else {
+        this.startTime = audioCtx.currentTime;
+        // Connect graph
+        this.source = audioCtx.createBufferSource();
+        this.source.connect(this.analyser);
+        this.source.buffer = this.buffer;
+        this.source.loop = true;
+        // Start playback, but make sure we stay in bound of the buffer.
+        this.source[this.source.start ? 'start' : 'noteOn'](0, this.startOffset % this.bufferDuration);
+    }
+
+    this.isPlaying = !this.isPlaying;
+
 };
 
 
