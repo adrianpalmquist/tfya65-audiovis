@@ -23,6 +23,11 @@ var AudioHandler = function(analyser) {
         temp.changeFilter(filterSelect.value);
     });
     //console.log(filterSelect.value);
+
+    var toggle = document.getElementById("toggle");
+    toggle.addEventListener("click", function() {
+        temp.togglePlayback();
+    });
 };
 
 
@@ -82,6 +87,7 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
     if (currentFilter == 'biquad')
     this.addBiQuadFilter('lowpass', 200);
 else
+    this.resetEffects();
     console.log('No filter selected');
 };
 
