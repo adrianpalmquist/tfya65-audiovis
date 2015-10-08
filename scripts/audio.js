@@ -99,6 +99,9 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
         case 'voiceboost':
             this.addBiQuadFilter('peaking', 3000);
             break;
+        case 'telephone':
+            this.addBiQuadFilter('bandpass', 2000);
+            break;
         case 'distortion':
             this.addDistortion();
             break;
@@ -113,6 +116,7 @@ AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency) {
     var filter = audioCtx.createBiquadFilter();
     filter.type = type;
     filter.gain = 25;
+    filter.Q.value = 5;
     filter.frequency.value = cutoffFrequency;
     this.applyEffect(filter);
 };
