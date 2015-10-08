@@ -87,8 +87,17 @@ AudioHandler.prototype.resetEffects = function() {
 
 AudioHandler.prototype.changeFilter = function(currentFilter) {
     switch (currentFilter) {
-        case 'biquad':
+        case 'lowpass':
             this.addBiQuadFilter('lowpass', 500);
+            break;
+        case 'highpass':
+            this.addBiQuadFilter('highpass', 5000);
+            break;
+        case 'bassboost':
+            this.addBiQuadFilter('lowshelf', 300);
+            break;
+        case 'voiceboost':
+            this.addBiQuadFilter('peaking', 3000);
             break;
         case 'distortion':
             this.addDistortion();
