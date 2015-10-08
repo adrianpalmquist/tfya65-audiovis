@@ -33,26 +33,46 @@ ThreeVis.prototype.init = function() {
     particles = new Array();
 
     var PI2 = Math.PI * 2;
-    var material = new THREE.SpriteCanvasMaterial({
 
-        color: 0xfffff,
+    /*var material = new THREE.SpriteCanvasMaterial({
+
+        color: 0x00000,
         program: function(context) {
 
             context.beginPath();
             context.arc(0, 0, 0.5, 0, PI2, true);
             context.fill();
         }
-    });
+    });*/
 
     //Create particles
+    var program = function ( context ) {
+
+					context.beginPath();
+					context.arc( 0, 0, 0.5, 0, PI2, true );
+					context.fill();
+
+				};
+
+
     var i = 0;
     var SEPARATION = 1;
 
     for (var ix = 0; ix < this.AMOUNTX; ix++) {
+
+        //Set material colors
+        var material = new THREE.SpriteCanvasMaterial( {
+          color: Math.random() * 0x808008 + 0x808080,
+          program: program
+        } );
+
+        particle = new THREE.Sprite( material );
+
+        //distribute particles
         particle = particles[i++] = new THREE.Sprite(material);
         particle.position.x = ix * SEPARATION - ((this.AMOUNTX * SEPARATION) / 2);
-        particle.scale.x = 2;
-        particle.scale.y = 2;
+        particle.scale.x = Math.random() * 1 + 1;
+        particle.scale.y = Math.random() * 1 + 1;
         //particle.position.z = iy * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
         scene.add(particle);
 
@@ -65,7 +85,7 @@ ThreeVis.prototype.init = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    //Show FPS 
+    //Show FPS
 		this.stats = new Stats();
 		this.stats.domElement.style.position = 'absolute';
 	  this.stats.domElement.style.top = '200px';
@@ -132,7 +152,7 @@ ThreeVis.prototype.render = function() {
     //camera.lookAt( scene.position );
     camera.lookAt(new THREE.Vector3(0, 50, 0));
 
-    renderer.setClearColor(0x007cbc, 1);
+    renderer.setClearColor(0x00000, 1);
 
     for (var i = 0; i < this.AMOUNTX; i++) {
         var value = this.musicData[i];
@@ -143,6 +163,8 @@ ThreeVis.prototype.render = function() {
         //var hue = i / this.musicData.length * 360;
         particle = particles[i];
         particle.position.y = height;
+        //particle.scale.y = particle.scale.x = height/100;
+
     }
 
     // var j = 0;
