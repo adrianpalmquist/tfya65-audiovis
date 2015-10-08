@@ -3,13 +3,14 @@ var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 window.onload = function() {
     var app = new App();
     app.loadFile();
-    
+
 };
 
 var App = function() {
 
     this.audioHandler = null;
     this.visualiser = null;
+    this.threeVis = null;
     this.analyser = audioCtx.createAnalyser();
     this.analyser.connect(audioCtx.destination);
     this.analyser.minDecibels = -120;
@@ -46,18 +47,20 @@ App.prototype.loadFile = function() {
 App.prototype.finishedLoading = function(buffer) {
     this.audioHandler = new AudioHandler(this.analyser);
     this.audioHandler.playSound(buffer);
-    this.visualiser = new Visualiser(this.analyser);
-    this.visualiser.draw();
+    //this.visualiser = new Visualiser(this.analyser);
+    //this.visualiser.draw();
+    this.threeVis = new ThreeVis(this.analyser);
+
 
     var tempAudio = this.audioHandler;
     var tempVis = this.visualiser;
     var toggle = document.getElementById("toggle");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
-        tempVis.toggleDraw();
+        //tempVis.toggleDraw();
     });
 
-    this.audioHandler.addBiQuadFilter('highpass', 400);
+    //this.audioHandler.addBiQuadFilter('highpass', 1000);
     //this.audioHandler.addBiQuadFilter()
 
 };

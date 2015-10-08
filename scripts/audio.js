@@ -23,7 +23,7 @@ var AudioHandler = function(analyser) {
     });
     //console.log(filterSelect.value);
 
-    
+
 };
 
 
@@ -86,15 +86,9 @@ AudioHandler.prototype.resetEffects = function() {
 };
 
 AudioHandler.prototype.changeFilter = function(currentFilter) {
-    console.log(currentFilter);
-    if (currentFilter == 'biquad')
-    this.addBiQuadFilter('lowpass', 200);
-else
-    this.resetEffects();
-    console.log('No filter selected');
     switch (currentFilter) {
         case 'biquad':
-            this.addBiQuadFilter('lowpass', 200);
+            this.addBiQuadFilter('lowpass', 500);
             break;
         case 'distortion':
             this.addDistortion();
