@@ -4,6 +4,7 @@ var ThreeVis = function(analyser) {
     this.windowHalfX = window.innerWidth / 2;
     this.windowHalfY = window.innerHeight / 2;
     this.container;
+    this.stats;
     this.camera, this.scene, this.renderer;
     this.particles, this.particle, this.count = 0;
     this.mouseX = this.mouseY = 0;
@@ -64,6 +65,12 @@ ThreeVis.prototype.init = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
+    //Show FPS 
+		this.stats = new Stats();
+		this.stats.domElement.style.position = 'absolute';
+	  this.stats.domElement.style.top = '200px';
+		container.appendChild( this.stats.domElement );
+
     //Moving camera
     document.addEventListener('mousemove', this.onDocumentMouseMove, false);
     document.addEventListener('touchstart', this.onDocumentTouchStart, false);
@@ -75,8 +82,8 @@ ThreeVis.prototype.init = function() {
 //From http://learningthreejs.com/data/THREEx/docs/THREEx.WindowResize.html
 ThreeVis.prototype.onWindowResize = function() {
 
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
+    this.windowHalfX = window.innerWidth / 2;
+    this.windowHalfY = window.innerHeight / 2;
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -86,8 +93,8 @@ ThreeVis.prototype.onWindowResize = function() {
 
 ThreeVis.prototype.onDocumentMouseMove = function(event) {
 
-    mouseX = event.clientX - this.windowHalfX;
-    mouseY = event.clientY - this.windowHalfY;
+    this.mouseX = event.clientX - this.windowHalfX;
+    this.mouseY = event.clientY - this.windowHalfY;
 }
 
 ThreeVis.prototype.onDocumentTouchStart = function(event) {
@@ -96,8 +103,8 @@ ThreeVis.prototype.onDocumentTouchStart = function(event) {
 
         event.preventDefault();
 
-        mouseX = event.touches[0].pageX - windowHalfX;
-        mouseY = event.touches[0].pageY - windowHalfY;
+        this.mouseX = event.touches[0].pageX - this.windowHalfX;
+        this.mouseY = event.touches[0].pageY - this.windowHalfY;
     }
 }
 
@@ -107,14 +114,15 @@ ThreeVis.prototype.onDocumentTouchMove = function(event) {
 
         event.preventDefault();
 
-        mouseX = event.touches[0].pageX - windowHalfX;
-        mouseY = event.touches[0].pageY - windowHalfY;
+        this.mouseX = event.touches[0].pageX - this.windowHalfX;
+        this.mouseY = event.touches[0].pageY - this.windowHalfY;
     }
 }
 
 ThreeVis.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));
     this.render();
+    this.stats.update();
 }
 
 ThreeVis.prototype.render = function() {
