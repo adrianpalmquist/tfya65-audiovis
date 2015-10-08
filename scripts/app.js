@@ -13,8 +13,8 @@ var App = function() {
     this.threeVis = null;
     this.analyser = audioCtx.createAnalyser();
     this.analyser.connect(audioCtx.destination);
-    this.analyser.minDecibels = -120;
-    this.analyser.maxDecibels = 0;
+    this.analyser.minDecibels = -100;
+    this.analyser.maxDecibels = -30;
     this.analyser.smoothingTimeConstant = 0.9;
     this.analyser.fftSize = 2048;
 
