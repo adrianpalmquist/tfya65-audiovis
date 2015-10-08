@@ -2,16 +2,26 @@ var Visualiser = function(analyser) {
     this.WIDTH = 640;
     this.HEIGHT = 360;
     this.intendedWidth = document.querySelector('.wrapper').clientWidth;
-    this.drawVisual = null;
     this.analyser = analyser;
     this.musicData = new Uint8Array(this.analyser.frequencyBinCount);
     this.canvas = document.querySelector('.visualiser');
     this.canvasCtx = this.canvas.getContext("2d");
+    this.isPlaying = true;
+    this.animationId;
 
 };
+Visualiser.prototype.toggleDraw = function() {
+    if (this.isPlaying) {
+        cancelAnimationFrame(this.animationId);
+    } else {
+        this.draw();
+    }
+
+    this.isPlaying = !this.isPlaying;
+
+}
 
 Visualiser.prototype.draw = function() {
-    this.drawVisual = requestAnimationFrame(this.draw.bind(this));
 
     this.analyser.getByteFrequencyData(this.musicData);
     //analyser.getByteTimeDomainData(musicData);
@@ -31,4 +41,5 @@ Visualiser.prototype.draw = function() {
         this.canvasCtx.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
         this.canvasCtx.fillRect(i * barWidth, offset, barWidth, height);
     }
+    this.animationId = requestAnimationFrame(this.draw.bind(this));
 };

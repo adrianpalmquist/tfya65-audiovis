@@ -17,6 +17,7 @@ var App = function() {
     this.analyser.smoothingTimeConstant = 0.9;
     this.analyser.fftSize = 2048;
 
+
 };
 
 App.prototype.loadFile = function() {
@@ -48,10 +49,15 @@ App.prototype.finishedLoading = function(buffer) {
     this.visualiser = new Visualiser(this.analyser);
     this.visualiser.draw();
 
+    var tempAudio = this.audioHandler;
+    var tempVis = this.visualiser;
+    var toggle = document.getElementById("toggle");
+    toggle.addEventListener("click", function() {
+        tempAudio.togglePlayback();
+        tempVis.toggleDraw();
+    });
+
     this.audioHandler.addBiQuadFilter('highpass', 400);
     //this.audioHandler.addBiQuadFilter()
 
-
 };
-
-

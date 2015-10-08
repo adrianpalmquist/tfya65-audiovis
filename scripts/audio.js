@@ -5,12 +5,14 @@ var AudioHandler = function(analyser) {
     this.source.connect(this.analyser);
     this.analyser.connect(audioCtx.destination);
     this.currentNode = this.source;
+    this.firstEffect = null;
 
     this.isPlaying = false;
     this.startTime = 0;
     this.startOffset = 0;
     this.bufferDuration = 0;
     this.buffer;
+
 
     // eventlistener, bind to changefilter
 
@@ -21,10 +23,7 @@ var AudioHandler = function(analyser) {
     });
     //console.log(filterSelect.value);
 
-    var toggle = document.getElementById("toggle");
-    toggle.addEventListener("click", function() {
-        temp.togglePlayback();
-    });
+    
 };
 
 
@@ -43,12 +42,15 @@ AudioHandler.prototype.togglePlayback = function() {
         // Stop playback
         this.source[this.source.stop ? 'stop' : 'noteOff'](0);
         this.startOffset += audioCtx.currentTime - this.startTime;
-
     } else {
         this.startTime = audioCtx.currentTime;
         // Connect graph
         this.source = audioCtx.createBufferSource();
-        this.source.connect(this.analyser);
+        if(this.firstEffect === null) {
+            this.source.connect(this.analyser);
+        } else {
+            this.source.connect(this.firstEffect);
+        }
         this.source.buffer = this.buffer;
         this.source.loop = true;
         // Start playback, but make sure we stay in bound of the buffer.
@@ -61,6 +63,9 @@ AudioHandler.prototype.togglePlayback = function() {
 
 
 AudioHandler.prototype.applyEffect = function(effect) {
+    if(this.firstEffect === null) {
+        this.firstEffect = effect;
+    }
     this.currentNode.disconnect();
     this.currentNode.connect(effect);
     this.currentNode = effect;
@@ -74,6 +79,7 @@ AudioHandler.prototype.removeEffect = function(effectName) {
 };
 
 AudioHandler.prototype.resetEffects = function() {
+    this.firstEffect = null;
     this.source.disconnect();
     this.source.connect(this.analyser);
     this.currentNode = this.source;
