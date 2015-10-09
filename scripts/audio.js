@@ -6,12 +6,16 @@ var AudioHandler = function(analyser) {
     this.analyser.connect(audioCtx.destination);
     this.currentNode = this.source;
     this.firstEffect = null;
+    var DEFAULT_GAIN = 25;
+    var DEFAULT_Q = 5;
 
     this.isPlaying = false;
     this.startTime = 0;
     this.startOffset = 0;
     this.bufferDuration = 0;
     this.buffer;
+    this.filterGain = DEFAULT_GAIN;
+    this.filterQ = DEFAULT_Q;
 
 
     // eventlistener, bind to changefilter
@@ -21,6 +25,17 @@ var AudioHandler = function(analyser) {
     filterSelect.addEventListener("change", function()  {
         temp.changeFilter(filterSelect.value);
     });
+
+    // var gainSelect = document.getElementById("gainControl");
+    // gainSelect.addEventListener("change", function() {
+    //     temp.changeGain(gainSelect.value);
+    // });
+
+    // var qSelect = document.getElementById("qSelect");
+    // gainSelect.addEventListener("change", function() {
+    //     temp.changeQ(qSelect.value);
+    // });
+
     //console.log(filterSelect.value);
 
 
@@ -112,10 +127,18 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
     }
 };
 
+AudioHandler.prototype.changeGain = function(gain) {
+    this.filterGain = gain;
+};
+
+AudioHandler.prototype.changeQ = function(q) {
+    this.filterQ = q;
+};
+
 AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency) {
     var filter = audioCtx.createBiquadFilter();
     filter.type = type;
-    filter.gain = 25;
+    filter.gain = this.filterGain;
     filter.Q.value = 5;
     filter.frequency.value = cutoffFrequency;
     this.applyEffect(filter);
