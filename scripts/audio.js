@@ -1,7 +1,12 @@
-var AudioHandler = function(analyser) {
+var AudioHandler = function(analyser, buffers) {
     //console.log(typeof(analyser));
     this.analyser = analyser;
     this.source = audioCtx.createBufferSource();
+    this.bufferList = buffers;
+    this.buffer = this.bufferList[0];
+    this.bufferDuration = this.buffer.duration;
+    console.log(this.analyser);
+    this.source.buffer = this.buffer;
     this.source.connect(this.analyser);
     this.analyser.connect(audioCtx.destination);
     this.currentNode = this.source;
@@ -12,10 +17,12 @@ var AudioHandler = function(analyser) {
     this.isPlaying = false;
     this.startTime = 0;
     this.startOffset = 0;
-    this.bufferDuration = 0;
-    this.buffer;
+    
     this.filterGain = DEFAULT_GAIN;
     this.filterQ = DEFAULT_Q;
+    this.convolverSound = buffers[1];
+
+    
 
 
     // eventlistener, bind to changefilter
@@ -42,15 +49,6 @@ var AudioHandler = function(analyser) {
 };
 
 
-AudioHandler.prototype.playSound = function(buffer) {
-    this.source.buffer = buffer; // Attatch our Audio Data as it's Buffer
-    this.buffer = buffer;
-    this.bufferDuration = buffer.duration;
-    //source.loop = true;
-    //source.connect(audioCtx.destination); // Link the Sound to the Output
-    this.source.start(0);
-    this.isPlaying = true;
-};
 
 AudioHandler.prototype.togglePlayback = function() {
     if (this.isPlaying) {
@@ -58,6 +56,7 @@ AudioHandler.prototype.togglePlayback = function() {
         this.source[this.source.stop ? 'stop' : 'noteOff'](0);
         this.startOffset += audioCtx.currentTime - this.startTime;
     } else {
+        // start playback
         this.startTime = audioCtx.currentTime;
         // Connect graph
         this.source = audioCtx.createBufferSource();
@@ -169,5 +168,6 @@ AudioHandler.prototype.makeDistortionCurve = function(amount) {
 
 AudioHandler.prototype.addConvolver = function(first_argument) {
     var convolver = audioCtx.createConvolver();
-
+    convolver.buffer = this.convolverSound;
+    this.applyEffect(convolver);
 };

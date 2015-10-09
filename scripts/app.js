@@ -22,31 +22,21 @@ var App = function() {
 };
 
 App.prototype.loadFile = function() {
-    var audioFileUrl = 'sounds/chrono.mp3';
 
-    request = new XMLHttpRequest();
-    request.open("GET", audioFileUrl, true);
-    request.responseType = "arraybuffer";
+    var that = this;
+    var bufferLoader = new BufferLoader(audioCtx, [
+            '../sounds/chrono.mp3',
+            '../sounds/concert-crowd.mp3',
+        ],
+        that.finishedLoading.bind(that)
+    );
 
-    var loader = this;
-
-    // Our asynchronous callback
-    request.onload = function() {
-        audioCtx.decodeAudioData(
-            request.response,
-            function(buffer) {
-                loader.finishedLoading(buffer);
-            },
-            function(error) {
-                console.error('decodedAudioData error', error);
-            });
-    };
-    request.send();
+    bufferLoader.load();
 };
 
-App.prototype.finishedLoading = function(buffer) {
-    this.audioHandler = new AudioHandler(this.analyser);
-    this.audioHandler.playSound(buffer);
+App.prototype.finishedLoading = function(bufferList) {
+
+    this.audioHandler = new AudioHandler(this.analyser, bufferList);
     //this.visualiser = new Visualiser(this.analyser);
     //this.visualiser.draw();
     this.threeVis = new ThreeVis(this.analyser);
