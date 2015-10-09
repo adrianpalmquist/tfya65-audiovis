@@ -44,11 +44,16 @@ App.prototype.finishedLoading = function(bufferList) {
 
     var tempAudio = this.audioHandler;
     var tempVis = this.visualiser;
-    var toggle = document.getElementById("toggle2");
+    var toggle = document.getElementById("toggle");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
-        //tempVis.toggleDraw();
-    });
+        if(toggle.textContent == "Pause")
+            toggle.textContent = "Play";
+        else
+            toggle.textContent = "Pause";
+
+                //tempVis.toggleDraw();
+            });
 
     //this.audioHandler.addBiQuadFilter('highpass', 1000);
     //this.audioHandler.addBiQuadFilter()

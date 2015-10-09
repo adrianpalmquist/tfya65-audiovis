@@ -2,77 +2,56 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>TFYA65 - Ljudprojekt</title>
+  <title>TFYA65 - Ljudprojekt</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
 <body>
-    <script src="scripts/three.min.js"></script>
-    <script src="scripts/Projectors.js"></script>
-    <script src="scripts/CanvasRenderer.js"></script>
-    <script src="scripts/Stats.js" ></script>
-    <script src="scripts/buffer-loader.js"></script>
-    <script src="scripts/audio.js" ></script>
-    <script src="scripts/3dvis.js" ></script>
-    <script src="scripts/visualiser.js" ></script>
-    <script src="scripts/app.js" ></script>
-    <div class="wrapper">
-    	<form class="controls">
-          <div>
-            <label for="filter">Filter setting</label>
-            <select id="filter" name="filter">
-              <option value="distortion">Distortion</option>
-              <option value="convolver">Reverb</option>
-              <option value="bassboost">Bass Boost</option>
-              <option value="voiceboost">Voice Boost</option>
-              <option value="lowpass">Lowpass filter (500 Hz)</option>
-              <option value="highpass">Highpass filter (1000 Hz)</option>
-              <option value="telephone">Bandpass (2000 Hz)</option>
-
-              <option value="off" selected>Off</option>
-            </select>
-         </div>
-         <div>
-            <button type="button" id="toggle" name="toggle">Play/Pause</button>
-          </div>
-		</form>
+  <script src="scripts/three.min.js"></script>
+  <script src="scripts/Projectors.js"></script>
+  <script src="scripts/CanvasRenderer.js"></script>
+  <script src="scripts/Stats.js" ></script>
+  <script src="scripts/buffer-loader.js"></script>
+  <script src="scripts/audio.js" ></script>
+  <script src="scripts/3dvis.js" ></script>
+  <script src="scripts/visualiser.js" ></script>
+  <script src="scripts/app.js" ></script>
+  <div class="wrapper">
+   <form class="controls">
     <div class ="buttons">
-      <div class="btn-group" role="group" aria-label="...">
-      <button type="button" class="btn btn-default btn-lg" id="toggle2">
-              <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Play
-            </button>
-            <button type="button" class="btn btn-default btn-lg">
-              <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Play
-            </button>
-          </div>
-          </div>
-    <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Filter setting
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Distortion</a></li>
-    <li><a href="#">Reverb</a></li>
-    <li><a href="#">Bass Boost</a></li>
-    <li><a href="#">Off</a></li>
-  </ul>
-</div>
-        <canvas class="visualiser" </canvas>
+      <button type="button" class="btn btn-default btn-lg" id="toggle">Pause</button>
     </div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">
+        Filter setting
+      </label>
+      <div class="col-xs-5 selectContainer">
+        <select name="filter" class="form-control" id="filter">
+          <option value="off">Off</option>
+          <option value="distortion">Distortion</option>
+          <option value="convolver">Reverb</option>
+          <option value="bassboost">Bass Boost</option>
+          <option value="voiceboost">Voice Boost</option>
+          <option value="lowpass">Lowpass filter (500 Hz)</option>
+          <option value="highpass">Highpass filter (1000 Hz)</option>
+          <option value="telephone">Bandpass (2000 Hz)</option>
+        </div>
+      </form>
+      <canvas class="visualiser" </canvas>
+      </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="js/bootstrap.min.js"></script>
 
-</body>
+    </body>
 
-</html>
+    </html>
