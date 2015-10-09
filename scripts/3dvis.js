@@ -1,11 +1,7 @@
 var ThreeVis = function(analyser) {
-
-
     this.windowHalfX = window.innerWidth / 2;
     this.windowHalfY = window.innerHeight / 2;
-    this.container;
-    this.stats;
-    this.camera, this.scene, this.renderer;
+    this.camera, this.scene, this.renderer, this.container, this.stats;
     this.particles, this.particle, this.count = 0;
     this.mouseX = this.mouseY = 0;
     this.analyser = analyser;
@@ -14,7 +10,6 @@ var ThreeVis = function(analyser) {
 
     this.init();
     this.animate();
-
 }
 
 /* FUNCTIONS */
@@ -34,7 +29,7 @@ ThreeVis.prototype.init = function() {
 
     var PI2 = Math.PI * 2;
 
-    /*var material = new THREE.SpriteCanvasMaterial({
+    var material = new THREE.SpriteCanvasMaterial({
 
         color: 0x00000,
         program: function(context) {
@@ -43,7 +38,7 @@ ThreeVis.prototype.init = function() {
             context.arc(0, 0, 0.5, 0, PI2, true);
             context.fill();
         }
-    });*/
+    });
 
     //Create particles
     var program = function ( context ) {
@@ -51,31 +46,19 @@ ThreeVis.prototype.init = function() {
 					context.beginPath();
 					context.arc( 0, 0, 0.5, 0, PI2, true );
 					context.fill();
-
 				};
-
 
     var i = 0;
     var SEPARATION = 1;
 
     for (var ix = 0; ix < this.AMOUNTX; ix++) {
-
-        //Set material colors
-        var material = new THREE.SpriteCanvasMaterial( {
-          color: Math.random() * 0x808008 + 0x808080,
-          program: program
-        } );
-
-        particle = new THREE.Sprite( material );
-
         //distribute particles
         particle = particles[i++] = new THREE.Sprite(material);
         particle.position.x = ix * SEPARATION - ((this.AMOUNTX * SEPARATION) / 2);
-        particle.scale.x = Math.random() * 1 + 1;
-        particle.scale.y = Math.random() * 1 + 1;
-        //particle.position.z = iy * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
+        particle.scale.x = Math.random() * 1 + 1.5;
+        particle.scale.y = Math.random() * 1 + 1.5;
+        //particle.position.z = ix * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
         scene.add(particle);
-
     }
 
 
@@ -88,7 +71,7 @@ ThreeVis.prototype.init = function() {
     //Show FPS
 		this.stats = new Stats();
 		this.stats.domElement.style.position = 'absolute';
-	  this.stats.domElement.style.top = '200px';
+	  this.stats.domElement.style.top = '300px';
 		container.appendChild( this.stats.domElement );
 
     //Moving camera
@@ -152,7 +135,7 @@ ThreeVis.prototype.render = function() {
     //camera.lookAt( scene.position );
     camera.lookAt(new THREE.Vector3(0, 50, 0));
 
-    renderer.setClearColor(0x00000, 1);
+    renderer.setClearColor(0xfffff, 1);
 
     for (var i = 0; i < this.AMOUNTX; i++) {
         var value = this.musicData[i];
@@ -164,7 +147,6 @@ ThreeVis.prototype.render = function() {
         particle = particles[i];
         particle.position.y = height;
         //particle.scale.y = particle.scale.x = height/100;
-
     }
 
     // var j = 0;
