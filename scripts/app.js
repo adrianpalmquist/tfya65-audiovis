@@ -26,7 +26,7 @@ App.prototype.loadFile = function() {
     var that = this;
     var bufferLoader = new BufferLoader(audioCtx, [
             '../sounds/chrono.mp3',
-            '../sounds/concert-crowd.mp3',
+            '../sounds/church.mp3',
         ],
         that.finishedLoading.bind(that)
     );

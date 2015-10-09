@@ -100,6 +100,7 @@ AudioHandler.prototype.resetEffects = function() {
 };
 
 AudioHandler.prototype.changeFilter = function(currentFilter) {
+    this.resetEffects();
     switch (currentFilter) {
         case 'lowpass':
             this.addBiQuadFilter('lowpass', 500);
@@ -118,6 +119,9 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
             break;
         case 'distortion':
             this.addDistortion();
+            break;
+        case 'convolver':
+            this.addConvolver();
             break;
         default:
             this.resetEffects();
