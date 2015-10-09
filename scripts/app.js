@@ -47,10 +47,10 @@ App.prototype.finishedLoading = function(bufferList) {
     var toggle = document.getElementById("toggle");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
-        if(toggle.textContent == "Pause")
-            toggle.textContent = "Play";
-        else
+        if(toggle.textContent == "Play")
             toggle.textContent = "Pause";
+        else
+            toggle.textContent = "Play";
 
                 //tempVis.toggleDraw();
             });
