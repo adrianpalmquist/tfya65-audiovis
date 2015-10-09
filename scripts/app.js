@@ -54,7 +54,7 @@ App.prototype.finishedLoading = function(buffer) {
 
     var tempAudio = this.audioHandler;
     var tempVis = this.visualiser;
-    var toggle = document.getElementById("toggle");
+    var toggle = document.getElementById("toggle2");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
         //tempVis.toggleDraw();
