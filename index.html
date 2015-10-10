@@ -26,9 +26,10 @@
   <script src="scripts/visualiser.js" ></script>
   <script src="scripts/app.js" ></script>
   <div class="wrapper">
-   <form class="controls">
     <div class ="buttons">
-      <button type="button" class="btn btn-default btn-lg" id="toggle">Play</button>
+      <button type="button" class="btn btn-default btn-lg" id="toggle">
+        <span id="togglespan" class="glyphicon glyphicon-play" aria-hidden="true"></span>
+      </button>
     </div>
     <div class="form-group">
       <label class="col-xs-3 control-label">
@@ -45,12 +46,13 @@
           <option value="highpass">Highpass filter (1000 Hz)</option>
           <option value="telephone">Bandpass (2000 Hz)</option>
         </div>
-      </form>
+      </div>
       <div class="file">
         <p>Upload file</p>
         <input type="file" id="fileUpload">
       <canvas class="visualiser" </canvas>
       </div>
+    </div>
 
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -45,12 +45,13 @@ App.prototype.finishedLoading = function(bufferList) {
     var tempAudio = this.audioHandler;
     var tempVis = this.visualiser;
     var toggle = document.getElementById("toggle");
+    var togglespan = document.getElementById("togglespan");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
-        if(toggle.textContent == "Play")
-            toggle.textContent = "Pause";
+        if(togglespan.className == "glyphicon glyphicon-play")
+            togglespan.className = "glyphicon glyphicon-pause";
         else
-            toggle.textContent = "Play";
+            togglespan.className = "glyphicon glyphicon-play";
 
                 //tempVis.toggleDraw();
             });
