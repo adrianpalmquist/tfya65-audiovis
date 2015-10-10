@@ -19,17 +19,11 @@ ThreeVis.prototype.init = function() {
     container = document.createElement('div');
     document.body.appendChild(container);
 
-    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 500, 1000 );
+    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 500, 1000);
 
-    camera.position.x = 200;
-		camera.position.y = 100;
-		camera.position.z = 200;
-
-    /*
-    camera.position.z = 300;
     camera.position.x = 0;
-    camera.position.y = 0
-    */
+		camera.position.y = 0;
+		camera.position.z = 200;
 
     scene = new THREE.Scene();
 
@@ -74,7 +68,7 @@ ThreeVis.prototype.init = function() {
     //Create Lines and set material properties
     line = new THREE.Line( geometry, new THREE.LineBasicMaterial( {
 
-      color: 0x00000,
+      color: 0xffffff,
       opacity: 1,
       linewidth: 3
 
@@ -156,12 +150,12 @@ ThreeVis.prototype.render = function() {
     var timer = Date.now() * 0.0001;
 
 
-    camera.position.x = Math.cos( timer ) * 200;
-		camera.position.z = Math.sin( timer ) * 200;
+    //camera.position.x = Math.cos( timer ) * 200;
+		//camera.position.z = Math.sin( timer ) * 200;
     camera.lookAt( scene.position );
     //camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    renderer.setClearColor(0xfffff, 1);
+    renderer.setClearColor(0x00000, 1);
 
     for (var i = 0; i < this.AMOUNTX; i++) {
         var value = this.musicData[i];
@@ -172,6 +166,7 @@ ThreeVis.prototype.render = function() {
         //var hue = i / this.musicData.length * 360;
         particle = particles[i];
         particle.position.y = height;
+
         //particle.scale.y = particle.scale.x = height/100;
     }
 
