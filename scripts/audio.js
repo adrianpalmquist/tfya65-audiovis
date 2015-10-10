@@ -20,9 +20,18 @@ var AudioHandler = function(analyser, buffers) {
     
     this.filterGain = DEFAULT_GAIN;
     this.filterQ = DEFAULT_Q;
-    this.convolverSound = buffers[1];
+    this.convolverSound = null;
 
-    
+    var that = this;
+    var bufferLoader = new BufferLoader(audioCtx, [
+            '../sounds/church.mp3',
+        ],
+        that.loadConvolverSound
+    );
+
+    bufferLoader.load();
+
+
 
 
     // eventlistener, bind to changefilter
@@ -48,6 +57,9 @@ var AudioHandler = function(analyser, buffers) {
 
 };
 
+AudioHandler.prototype.loadConvolverSound = function(buffers) {
+    this.convolverSound = buffers[0];
+};
 
 
 AudioHandler.prototype.togglePlayback = function() {

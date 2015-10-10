@@ -18,15 +18,29 @@ var App = function() {
     this.analyser.smoothingTimeConstant = 0.9;
     this.analyser.fftSize = 2048;
 
+    var fileUpload = document.getElementById("fileUpload");
+    var temp = this;
+    fileUpload.addEventListener("change", function()  {
+        temp.loadUploadedFile(fileUpload.value);
+    });
+
 
 };
 
-App.prototype.loadFile = function() {
+App.prototype.loadUploadedFile = function(file) {
+    var reader = new FileReader();
+    var that = this;
+    reader.onload = function(e) {
+        that.finishedLoading(e.target.result);
+    };
+    reader.readAsArrayBuffer(e.target.files[0]);
+};
+
+App.prototype.loadDefault = function() {
 
     var that = this;
     var bufferLoader = new BufferLoader(audioCtx, [
             '../sounds/chrono.mp3',
-            '../sounds/church.mp3',
         ],
         that.finishedLoading.bind(that)
     );
@@ -47,13 +61,13 @@ App.prototype.finishedLoading = function(bufferList) {
     var toggle = document.getElementById("toggle");
     toggle.addEventListener("click", function() {
         tempAudio.togglePlayback();
-        if(toggle.textContent == "Play")
+        if (toggle.textContent == "Play")
             toggle.textContent = "Pause";
         else
             toggle.textContent = "Play";
 
-                //tempVis.toggleDraw();
-            });
+        //tempVis.toggleDraw();
+    });
 
     //this.audioHandler.addBiQuadFilter('highpass', 1000);
     //this.audioHandler.addBiQuadFilter()
