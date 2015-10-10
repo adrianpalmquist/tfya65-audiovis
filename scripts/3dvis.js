@@ -49,6 +49,8 @@ ThreeVis.prototype.init = function() {
 
     var i = 0;
     var SEPARATION = 1;
+
+    //Create Three.js Geo
     var geometry = new THREE.Geometry();
 
 
@@ -71,7 +73,7 @@ ThreeVis.prototype.init = function() {
 
       color: 0xffffff,
       opacity: 1,
-      linewidth: 3
+      linewidth: 1
 
     }));
 
@@ -104,6 +106,7 @@ ThreeVis.prototype.onWindowResize = function() {
     this.windowHalfX = window.innerWidth / 2;
     this.windowHalfY = window.innerHeight / 2;
 
+    //Set camera aspect ratio and update Projection Matrix
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -115,7 +118,6 @@ ThreeVis.prototype.onDocumentMouseMove = function(event) {
 }
 
 ThreeVis.prototype.onDocumentTouchStart = function(event) {
-
     if (event.touches.length === 1) {
         event.preventDefault();
         this.mouseX = event.touches[0].pageX - this.windowHalfX;
@@ -124,7 +126,6 @@ ThreeVis.prototype.onDocumentTouchStart = function(event) {
 }
 
 ThreeVis.prototype.onDocumentTouchMove = function(event) {
-
     if (event.touches.length === 1) {
         event.preventDefault();
         this.mouseX = event.touches[0].pageX - this.windowHalfX;
@@ -140,15 +141,18 @@ ThreeVis.prototype.animate = function() {
 
 ThreeVis.prototype.render = function() {
 
+    //Get Music Data
     this.analyser.getByteFrequencyData(this.musicData);
+
     var timer = Date.now() * 0.0001;
 
     //camera.position.x = Math.cos( timer ) * 200;
 		//camera.position.z = Math.sin( timer ) * 200;
     camera.lookAt( scene.position );
-    //camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+    //Set BG color
     renderer.setClearColor(0x00000, 1);
+
 
     for (var i = 0; i < this.AMOUNTX; i++) {
         var value = this.musicData[i];
