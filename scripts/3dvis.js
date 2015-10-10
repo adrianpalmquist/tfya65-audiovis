@@ -15,11 +15,11 @@ var ThreeVis = function(analyser) {
 /* FUNCTIONS */
 ThreeVis.prototype.init = function() {
 
-    //Init 3D scene
+    //Init 3D Scene
     container = document.createElement('div');
     document.body.appendChild(container);
 
-    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 500, 1000);
+    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2,           window.innerHeight / - 2, - 500, 1000);
 
     camera.position.x = 0;
 		camera.position.y = 0;
@@ -53,6 +53,7 @@ ThreeVis.prototype.init = function() {
 
 
     for (var ix = 0; ix < this.AMOUNTX; ix++) {
+
         //distribute particles
         particle = particles[i++] = new THREE.Sprite(material);
         particle.position.x = ix * SEPARATION - ((this.AMOUNTX * SEPARATION) / 2);
@@ -100,18 +101,15 @@ ThreeVis.prototype.init = function() {
 
 //From http://learningthreejs.com/data/THREEx/docs/THREEx.WindowResize.html
 ThreeVis.prototype.onWindowResize = function() {
-
     this.windowHalfX = window.innerWidth / 2;
     this.windowHalfY = window.innerHeight / 2;
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 ThreeVis.prototype.onDocumentMouseMove = function(event) {
-
     this.mouseX = event.clientX - this.windowHalfX;
     this.mouseY = event.clientY - this.windowHalfY;
 }
@@ -119,9 +117,7 @@ ThreeVis.prototype.onDocumentMouseMove = function(event) {
 ThreeVis.prototype.onDocumentTouchStart = function(event) {
 
     if (event.touches.length === 1) {
-
         event.preventDefault();
-
         this.mouseX = event.touches[0].pageX - this.windowHalfX;
         this.mouseY = event.touches[0].pageY - this.windowHalfY;
     }
@@ -130,9 +126,7 @@ ThreeVis.prototype.onDocumentTouchStart = function(event) {
 ThreeVis.prototype.onDocumentTouchMove = function(event) {
 
     if (event.touches.length === 1) {
-
         event.preventDefault();
-
         this.mouseX = event.touches[0].pageX - this.windowHalfX;
         this.mouseY = event.touches[0].pageY - this.windowHalfY;
     }
@@ -149,7 +143,6 @@ ThreeVis.prototype.render = function() {
     this.analyser.getByteFrequencyData(this.musicData);
     var timer = Date.now() * 0.0001;
 
-
     //camera.position.x = Math.cos( timer ) * 200;
 		//camera.position.z = Math.sin( timer ) * 200;
     camera.lookAt( scene.position );
@@ -162,23 +155,11 @@ ThreeVis.prototype.render = function() {
         var percent = value / 256;
         var height = this.windowHalfY * percent;
         var offset = this.windowHalfY - height - 1;
-        var barWidth = this.windowHalfX / this.musicData.length;
-        //var hue = i / this.musicData.length * 360;
+
         particle = particles[i];
         particle.position.y = height;
 
         //particle.scale.y = particle.scale.x = height/100;
     }
-
-    // var j = 0;
-    // for ( var ix = 0; ix < this.AMOUNTX; ix ++ ) {
-    // 	for ( var iy = 0; iy < this.AMOUNTY; iy ++ ) {
-    // 	  particle = particles[j++];
-    // 		particle.position.y = 1;
-    //     particle.scale.x = 1;
-    // 		particle.scale.y = 1;
-    //   }
-    // }
-
     renderer.render(scene, camera);
 }
