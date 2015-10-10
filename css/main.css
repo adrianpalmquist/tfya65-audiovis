@@ -1,4 +1,4 @@
-body { background: rgb(26,255,255) !important; }
+body { background: rgb(0,0,0) !important; }
 
 
 div.wrapper { position:relative;
@@ -8,16 +8,7 @@ div.wrapper { position:relative;
 
 div.buttons { text-align: center;}
 
-/*div.playbutton { margin: 0 auto;
-				max-width: 52px;
-				padding:10px; }
-
-div.loadbutton { position:fixed; 
-				  box-sizing: border-box;
-				  top:0;
-					right:0;
-					width:135px;
-					height:100%}*/
+	label.control-label { color:white;}
 
 div.playbutton { display: inline-block;}
 
