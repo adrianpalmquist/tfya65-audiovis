@@ -2,64 +2,68 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>TFYA65 - Ljudprojekt</title>
-
-  <link href="css/main.css" rel="stylesheet">
-
-  <!-- Bootstrap -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TFYA65 - Ljudprojekt</title>
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-  <script src="scripts/three.min.js"></script>
-  <script src="scripts/Projectors.js"></script>
-  <script src="scripts/CanvasRenderer.js"></script>
-  <script src="scripts/Stats.js" ></script>
-  <script src="scripts/buffer-loader.js"></script>
-  <script src="scripts/audio.js" ></script>
-  <script src="scripts/3dvis.js" ></script>
-  <script src="scripts/visualiser.js" ></script>
-  <script src="scripts/app.js" ></script>
-  <div class="wrapper">
-    <div class ="buttons">
-      <button type="button" class="btn btn-default btn-lg" id="toggle">
-        <span id="togglespan" class="glyphicon glyphicon-play" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="btn btn-default btn-lg" id="loadDefaultBtn">Load default </button>
+    <script src="scripts/three.min.js"></script>
+    <script src="scripts/Projectors.js"></script>
+    <script src="scripts/CanvasRenderer.js"></script>
+    <script src="scripts/Stats.js"></script>
+    <script src="scripts/buffer-loader.js"></script>
+    <script src="scripts/audio.js"></script>
+    <script src="scripts/3dvis.js"></script>
+    <script src="scripts/visualiser.js"></script>
+    <script src="scripts/app.js"></script>
+    <div class="wrapper">
+
+        <div class="buttons">
+            <div class="playbutton">
+                <button type="button" class="btn btn-default btn-md" id="toggle">
+                    <span id="togglespan" class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="loadbutton">
+                <button type="button" class="btn btn-default btn-md" id="loadDefaultBtn">Load default </button>
+            </div>
+            <div class="browse">
+                <span class="btn btn-default btn-file">
+                    Browse <input type="file" id="fileUpload">
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">
+                Filter setting
+            </label>
+            <div class="selectContainer">
+                <select name="filter" class="form-control" id="filter">
+                    <option value="off">Off</option>
+                    <option value="distortion">Distortion</option>
+                    <option value="convolver">Reverb</option>
+                    <option value="bassboost">Bass Boost</option>
+                    <option value="voiceboost">Voice Boost</option>
+                    <option value="lowpass">Lowpass filter (500 Hz)</option>
+                    <option value="highpass">Highpass filter (1000 Hz)</option>
+                    <option value="telephone">Bandpass (2000 Hz)</option>
+                </select>
+            </div>
+            
+
+        </div>
+
     </div>
-    <div class="form-group">
-      <label class="col-xs-3 control-label">
-        Filter setting
-      </label>
-      <div class="col-xs-5 selectContainer">
-        <select name="filter" class="form-control" id="filter">
-          <option value="off">Off</option>
-          <option value="distortion">Distortion</option>
-          <option value="convolver">Reverb</option>
-          <option value="bassboost">Bass Boost</option>
-          <option value="voiceboost">Voice Boost</option>
-          <option value="lowpass">Lowpass filter (500 Hz)</option>
-          <option value="highpass">Highpass filter (1000 Hz)</option>
-          <option value="telephone">Bandpass (2000 Hz)</option>
-        </div>
-      </div>
-      <div class="file">
-        <p>Upload file</p>
-        <input type="file" id="fileUpload">
-        <canvas class="visualiser" </canvas>
-        </div>
-      </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
 
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.min.js"></script>
-
-    </body>
-
-    </html>
+</html>

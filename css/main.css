@@ -6,15 +6,41 @@ div.wrapper { position:relative;
 				 margin:auto;}
 
 
-div.buttons { position:relative; 
-			  left:50%;}
+div.buttons { text-align: center;}
 
-div.form-group { position:relative;
-				 top:5px;}
+/*div.playbutton { margin: 0 auto;
+				max-width: 52px;
+				padding:10px; }
 
-div.col-xs-5.selectContainer { position:absolute;
-							   left:32%;}
+div.loadbutton { position:fixed; 
+				  box-sizing: border-box;
+				  top:0;
+					right:0;
+					width:135px;
+					height:100%}*/
 
-label.col-xs-3.control-label { position:relative;
-							   left:12%;
-							   right: 10px;}
+div.playbutton { display: inline-block;}
+
+div.loadbutton { display: inline-block;}
+
+.browse { display: inline-block;}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
