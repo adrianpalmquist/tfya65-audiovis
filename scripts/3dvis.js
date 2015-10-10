@@ -2,7 +2,7 @@ var ThreeVis = function(analyser) {
     this.windowHalfX = window.innerWidth / 2;
     this.windowHalfY = window.innerHeight / 2;
     this.camera, this.scene, this.renderer, this.container, this.stats;
-    this.particles, this.particle, this.count = 0;
+    this.particles, this.particle, this.line, this.count = 0;
     this.mouseX = this.mouseY = 0;
     this.analyser = analyser;
     this.musicData = new Uint8Array(this.analyser.frequencyBinCount);
@@ -14,14 +14,22 @@ var ThreeVis = function(analyser) {
 
 /* FUNCTIONS */
 ThreeVis.prototype.init = function() {
-  
+
+    //Init 3D scene
     container = document.createElement('div');
     document.body.appendChild(container);
 
-    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 500, 1000 );
+
+    camera.position.x = 200;
+		camera.position.y = 100;
+		camera.position.z = 200;
+
+    /*
     camera.position.z = 300;
     camera.position.x = 0;
     camera.position.y = 0
+    */
 
     scene = new THREE.Scene();
 
@@ -32,7 +40,6 @@ ThreeVis.prototype.init = function() {
     var material = new THREE.SpriteCanvasMaterial({
         color: 0x00000,
         program: function(context) {
-
             context.beginPath();
             context.arc(0, 0, 0.5, 0, PI2, true);
             context.fill();
@@ -48,16 +55,32 @@ ThreeVis.prototype.init = function() {
 
     var i = 0;
     var SEPARATION = 1;
+    var geometry = new THREE.Geometry();
+
 
     for (var ix = 0; ix < this.AMOUNTX; ix++) {
         //distribute particles
         particle = particles[i++] = new THREE.Sprite(material);
         particle.position.x = ix * SEPARATION - ((this.AMOUNTX * SEPARATION) / 2);
-        particle.scale.x = Math.random() * 1 + 1.5;
-        particle.scale.y = Math.random() * 1 + 1.5;
-        //particle.position.z = ix * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
+        particle.scale.x = Math.random() * 0.1;
+        particle.scale.y = Math.random() * 0.1;
+
+        //particle.position.z = i * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
         scene.add(particle);
+        geometry.vertices.push( particle.position );
+
     }
+
+    //Create Lines and set material properties
+    line = new THREE.Line( geometry, new THREE.LineBasicMaterial( {
+
+      color: 0x00000,
+      opacity: 1,
+      linewidth: 3
+
+    }));
+
+    scene.add(line);
 
 
     //Create container and set renderer
@@ -130,9 +153,13 @@ ThreeVis.prototype.animate = function() {
 ThreeVis.prototype.render = function() {
 
     this.analyser.getByteFrequencyData(this.musicData);
+    var timer = Date.now() * 0.0001;
 
-    //camera.lookAt( scene.position );
-    camera.lookAt(new THREE.Vector3(0, 50, 0));
+
+    camera.position.x = Math.cos( timer ) * 200;
+		camera.position.z = Math.sin( timer ) * 200;
+    camera.lookAt( scene.position );
+    //camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     renderer.setClearColor(0xfffff, 1);
 
