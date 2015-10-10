@@ -14,7 +14,7 @@ var ThreeVis = function(analyser) {
 
 /* FUNCTIONS */
 ThreeVis.prototype.init = function() {
-
+  
     container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -30,7 +30,6 @@ ThreeVis.prototype.init = function() {
     var PI2 = Math.PI * 2;
 
     var material = new THREE.SpriteCanvasMaterial({
-
         color: 0x00000,
         program: function(context) {
 
@@ -42,7 +41,6 @@ ThreeVis.prototype.init = function() {
 
     //Create particles
     var program = function ( context ) {
-
 					context.beginPath();
 					context.arc( 0, 0, 0.5, 0, PI2, true );
 					context.fill();
@@ -68,10 +66,11 @@ ThreeVis.prototype.init = function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    //Show FPS
+    //Show FPS from https://github.com/mrdoob/stats.js/
 		this.stats = new Stats();
 		this.stats.domElement.style.position = 'absolute';
-	  this.stats.domElement.style.top = '300px';
+	  this.stats.domElement.style.top = '0px';
+    this.stats.domElement.style.right = '0px';
 		container.appendChild( this.stats.domElement );
 
     //Moving camera
