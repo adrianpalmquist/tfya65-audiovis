@@ -182,12 +182,12 @@ ThreeVis.prototype.render = function() {
 
     for (var i = 0; i < this.AMOUNTX; i++) {
         var value = this.musicData[i];
-        var percent = value / 256;
+        var percent = value / 255;
         var height = this.windowHalfY * percent;
         //var offset = this.windowHalfY - height - 1;
 
-        particle = particles[i];
-        particle.position.y = height;
+        particles[i].position.y = height;
+        
 
         //particle.scale.y = particle.scale.x = height/100;
     }
