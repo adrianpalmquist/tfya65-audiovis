@@ -11,8 +11,8 @@ var App = function() {
     this.visualiser = null;
     this.analyser = audioCtx.createAnalyser();
     this.analyser.connect(audioCtx.destination);
-    this.analyser.minDecibels = -90;
-    this.analyser.maxDecibels = -10;
+    this.analyser.minDecibels = -100;
+    this.analyser.maxDecibels = -20;
     this.analyser.smoothingTimeConstant = 0.9;
     this.analyser.fftSize = 2048;
 

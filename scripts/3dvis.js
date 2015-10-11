@@ -7,6 +7,8 @@ var ThreeVis = function(analyser) {
     this.analyser = analyser;
     this.musicData = new Uint8Array(this.analyser.frequencyBinCount);
     this.AMOUNTX = this.AMOUNTY = this.analyser.frequencyBinCount;
+    clock = new THREE.Clock(true);
+    tick = 0;
 
     this.init();
     this.animate();
@@ -16,8 +18,6 @@ var ThreeVis = function(analyser) {
 ThreeVis.prototype.init = function() {
 
     //Init 3D Scene
-    //container = document.createElement('div');
-    //document.body.appendChild(container);
 
     container = document.getElementById('visualiser');
 
@@ -30,80 +30,47 @@ ThreeVis.prototype.init = function() {
     camera.position.y = 0;
     camera.position.z = 200;
 
-
-
-
-
-
     scene = new THREE.Scene();
 
-    particles = new Array();
-
-    var PI2 = Math.PI * 2;
-
-    var material = new THREE.SpriteCanvasMaterial({
-        color: 0x00000,
-        program: function(context) {
-            context.beginPath();
-            context.arc(0, 0, 0.5, 0, PI2, true);
-            context.fill();
-        }
+    // The GPU Particle system extends THREE.Object3D, and so you can use it
+    // as you would any other scene graph component.  Particle positions will be
+    // relative to the position of the particle system, but you will probably only need one
+    // system for your whole scene
+    particleSystem = new THREE.GPUParticleSystem({
+        maxParticles: 250000
     });
+    scene.add(particleSystem);
 
-    //Create particles
-    var program = function(context) {
-        context.beginPath();
-        context.arc(0, 0, 0.5, 0, PI2, true);
-        context.fill();
+    // options passed during each spawned
+    options = {
+        position: new THREE.Vector3(),
+        positionRandomness: .3,
+        velocity: new THREE.Vector3(),
+        velocityRandomness: .5,
+        color: 0xaa88ff,
+        colorRandomness: .2,
+        turbulence: .4,
+        lifetime: 1,
+        size: 6,
+        sizeRandomness: 1
     };
 
-    var i = 0;
-    var SEPARATION = 1;
-
-    //Create Three.js Geo
-    var geometry = new THREE.Geometry();
-
-
-    for (var ix = 0; ix < this.AMOUNTX; ix++) {
-
-        //distribute particles
-        particle = particles[i++] = new THREE.Sprite(material);
-        particle.position.x = ix * SEPARATION - ((this.AMOUNTX * SEPARATION) / 2);
-        //particle.scale.x = Math.random() * 0.1;
-        //particle.scale.y = Math.random() * 0.1;
-
-        //particle.position.z = i * SEPARATION - ( ( this.AMOUNTY * SEPARATION ) / 2 );
-        scene.add(particle);
-        geometry.vertices.push(particle.position);
-
+    spawnerOptions = {
+        spawnRate: 10000,
+        horizontalSpeed: 1.5,
+        verticalSpeed: 1.33,
+        timeScale: 1
     }
-
-    //Create Lines and set material properties
-    line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-
-        color: 0xffffff,
-        opacity: 1,
-        linewidth: 1
-
-    }));
-
-    scene.add(line);
-
 
 
     //Create container and set renderer
-    renderer = new THREE.CanvasRenderer();
+    renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x00000, 1);
 
-    var tempPos = scene.position;
-    var offsetVec = new THREE.Vector3(0, 60, 0);
-    var newPos = new THREE.Vector3();
-    newPos.copy(tempPos);
-    newPos.add(offsetVec);
 
-    camera.lookAt(newPos);
+    camera.lookAt(scene.position);
 
     container.appendChild(renderer.domElement);
 
@@ -113,9 +80,6 @@ ThreeVis.prototype.init = function() {
     this.stats.domElement.style.top = '0px';
     this.stats.domElement.style.right = '0px';
     container.appendChild(this.stats.domElement);
-
-
-
 
     //Moving camera
     document.addEventListener('mousemove', this.onDocumentMouseMove, false);
@@ -171,25 +135,24 @@ ThreeVis.prototype.render = function() {
     //Get Music Data
     this.analyser.getByteFrequencyData(this.musicData);
 
-    //var timer = Date.now() * 0.0001;
+    var delta = clock.getDelta() * spawnerOptions.timeScale;
+    tick += delta;
 
-    //camera.position.x = Math.cos( timer ) * 200;
-    //camera.position.z = Math.sin( timer ) * 200;
+    if (tick < 0) tick = 0;
 
-    //Set BG color
+    if (delta > 0) {
 
-
-
-    for (var i = 0; i < this.AMOUNTX; i++) {
-        var value = this.musicData[i];
-        var percent = value / 255;
-        var height = this.windowHalfY * percent;
-        //var offset = this.windowHalfY - height - 1;
-
-        particles[i].position.y = height;
-        
-
-        //particle.scale.y = particle.scale.x = height/100;
+        for (var i = 0; i < this.AMOUNTX; i++) {
+            var value = this.musicData[i];
+            var percent = value / 255;
+            var height = this.windowHalfY * percent;
+            options.position.x = i - ((this.AMOUNTX) / 2);
+            options.position.y = height;
+            particleSystem.spawnParticle(options);
+        }
     }
+
+    particleSystem.update(tick);
+
     renderer.render(scene, camera);
 }
