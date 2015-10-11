@@ -2,6 +2,7 @@ var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
 window.onload = function() {
     var app = new App();
+    app.loadDefault();
 };
 
 var App = function() {
@@ -49,10 +50,10 @@ App.prototype.loadDefault = function() {
 
     var that = this;
     var bufferLoader = new BufferLoader(audioCtx, [
-        'sounds/chrono.mp3',
+            'sounds/chrono.mp3',
         ],
         that.finishedLoading.bind(that)
-        );
+    );
 
     bufferLoader.load();
 };
@@ -67,7 +68,7 @@ App.prototype.finishedLoading = function(bufferList) {
         var togglespan = document.getElementById("togglespan");
         toggle.addEventListener("click", function() {
             tempAudio.togglePlayback();
-            if(togglespan.className == "glyphicon glyphicon-play")
+            if (togglespan.className == "glyphicon glyphicon-play")
                 togglespan.className = "glyphicon glyphicon-pause";
             else
                 togglespan.className = "glyphicon glyphicon-play";

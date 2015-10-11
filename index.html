@@ -9,9 +9,6 @@
     <link href="css/main.css" rel="stylesheet">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
     <script src="scripts/three.min.js"></script>
     <script src="scripts/Projectors.js"></script>
     <script src="scripts/CanvasRenderer.js"></script>
@@ -21,44 +18,45 @@
     <script src="scripts/3dvis.js"></script>
     <script src="scripts/visualiser.js"></script>
     <script src="scripts/app.js"></script>
-    <div class="wrapper">
+</head>
 
-        <div class="buttons">
-            <div class="playbutton">
-                <button type="button" class="btn btn-default btn-md" id="toggle">
-                    <span id="togglespan" class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="loadbutton">
-                <button type="button" class="btn btn-default btn-md" id="loadDefaultBtn">Load default </button>
-            </div>
-            <div class="browse">
-                <span class="btn btn-default btn-file">
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <div class="buttons">
+                <div class="playbutton">
+                    <button type="button" class="btn btn-default btn-md" id="toggle">
+                        <span id="togglespan" class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="loadbutton">
+                    <button type="button" class="btn btn-default btn-md" id="loadDefaultBtn">Load default </button>
+                </div>
+                <div class="browse">
+                    <span class="btn btn-default btn-file">
                     Browse <input type="file" id="fileUpload">
                 </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Filter setting
+                </label>
+                <div class="selectContainer">
+                    <select name="filter" class="form-control" id="filter">
+                        <option value="off">Off</option>
+                        <option value="distortion">Distortion</option>
+                        <option value="convolver">Reverb</option>
+                        <option value="bassboost">Bass Boost</option>
+                        <option value="voiceboost">Voice Boost</option>
+                        <option value="lowpass">Lowpass filter (500 Hz)</option>
+                        <option value="highpass">Highpass filter (1000 Hz)</option>
+                        <option value="telephone">Bandpass (2000 Hz)</option>
+                    </select>
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="control-label">
-                Filter setting
-            </label>
-            <div class="selectContainer">
-                <select name="filter" class="form-control" id="filter">
-                    <option value="off">Off</option>
-                    <option value="distortion">Distortion</option>
-                    <option value="convolver">Reverb</option>
-                    <option value="bassboost">Bass Boost</option>
-                    <option value="voiceboost">Voice Boost</option>
-                    <option value="lowpass">Lowpass filter (500 Hz)</option>
-                    <option value="highpass">Highpass filter (1000 Hz)</option>
-                    <option value="telephone">Bandpass (2000 Hz)</option>
-                </select>
-            </div>
-            
-
-        </div>
-
+        <div id="visualiser"></div>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -1,25 +1,52 @@
-body { background: rgb(0,0,0) !important; }
+body,
+html {
+    background: rgb(0, 0, 0) !important;
+    height: 100%;
+}
 
+div.wrapper {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    padding: 20px;
+    margin: auto;
+    height: 100%;
+}
 
-div.wrapper { position:relative;
-				 padding:20px;
-				 margin:auto;}
+div.buttons {
+    text-align: center;
+}
 
+label.control-label {
+    color: white;
+}
 
-div.buttons { text-align: center;}
+div.playbutton {
+    display: inline-block;
+}
 
-	label.control-label { color:white;}
+div.loadbutton {
+    display: inline-block;
+}
 
-div.playbutton { display: inline-block;}
-
-div.loadbutton { display: inline-block;}
-
-.browse { display: inline-block;}
+.browse {
+    display: inline-block;
+}
 
 .btn-file {
     position: relative;
     overflow: hidden;
 }
+
+.header {
+    height: 25vh;
+}
+
+#visualiser {
+    position: relative;
+    height: 75vh;
+}
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;

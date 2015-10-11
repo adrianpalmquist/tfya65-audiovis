@@ -16,7 +16,7 @@ var AudioHandler = function(analyser, buffer) {
     this.isPlaying = false;
     this.startTime = 0;
     this.startOffset = 0;
-    
+
     this.filterGain = DEFAULT_GAIN;
     this.filterQ = DEFAULT_Q;
     this.convolverSound = null;
@@ -79,7 +79,7 @@ AudioHandler.prototype.togglePlayback = function() {
         this.startTime = audioCtx.currentTime;
         // Connect graph
         this.source = audioCtx.createBufferSource();
-        if(this.firstEffect === null) {
+        if (this.firstEffect === null) {
             this.source.connect(this.analyser);
         } else {
             this.source.connect(this.firstEffect);
@@ -96,7 +96,7 @@ AudioHandler.prototype.togglePlayback = function() {
 
 
 AudioHandler.prototype.applyEffect = function(effect) {
-    if(this.firstEffect === null) {
+    if (this.firstEffect === null) {
         this.firstEffect = effect;
     }
     this.currentNode.disconnect();
