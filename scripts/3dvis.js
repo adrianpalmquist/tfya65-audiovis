@@ -37,22 +37,23 @@ ThreeVis.prototype.init = function() {
     // relative to the position of the particle system, but you will probably only need one
     // system for your whole scene
     particleSystem = new THREE.GPUParticleSystem({
-        maxParticles: 250000
+        maxParticles: 900000
+
     });
     scene.add(particleSystem);
 
     // options passed during each spawned
     options = {
         position: new THREE.Vector3(),
-        positionRandomness: .3,
+        positionRandomness: .0,
         velocity: new THREE.Vector3(),
-        velocityRandomness: .5,
-        color: 0xaa88ff,
-        colorRandomness: .2,
-        turbulence: .4,
+        velocityRandomness: .0,
+        color: 0x158658,
+        colorRandomness: 0*Math.random(),
+        turbulence: .0,
         lifetime: 1,
-        size: 6,
-        sizeRandomness: 1
+        size: 8,
+        sizeRandomness: 3
     };
 
     spawnerOptions = {
@@ -134,9 +135,20 @@ ThreeVis.prototype.render = function() {
 
     //Get Music Data
     this.analyser.getByteFrequencyData(this.musicData);
+    camera.zoom = 30;
+    camera.updateProjectionMatrix();
+    var timer = Date.now() * 0.0001;
+
+		//camera.position.x = Math.cos( timer ) * 200;
+	  //camera.position.z = Math.sin( timer ) * 200;
+    //camera.position.y = Math.sin( timer ) * 200;
+
 
     var delta = clock.getDelta() * spawnerOptions.timeScale;
     tick += delta;
+
+    camera.zoom = 2;
+    camera.updateProjectionMatrix();
 
     if (tick < 0) tick = 0;
 
@@ -146,8 +158,19 @@ ThreeVis.prototype.render = function() {
             var value = this.musicData[i];
             var percent = value / 255;
             var height = this.windowHalfY * percent;
-            options.position.x = i - ((this.AMOUNTX) / 2);
-            options.position.y = height;
+            //options.position.x = Math.random() * 30 - 1;;
+            //options.position.y = height;
+
+            //options.position.normalize();
+            //options.position.multiplyScalar( Math.random() * 5 + 450 );
+
+            options.position.x = (Math.random() * 3 - 1)*height*tick;
+            options.position.y = -((Math.random() * 0.5 - 1)*height);
+            //options.position.z = (Math.random() * 1  - 1);
+
+            options.position.normalize();
+            options.position.multiplyScalar((height));
+
             particleSystem.spawnParticle(options);
         }
     }
