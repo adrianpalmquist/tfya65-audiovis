@@ -145,7 +145,7 @@ ThreeVis.prototype.render = function() {
 
     var d = new Date();
     var n = d.getTime();
-    var t = 1000 * 60;
+    var minutes = 1000 * 60;
     var y = Math.round(n / minutes);
 
     var delta = clock.getDelta() * spawnerOptions.timeScale;
@@ -169,7 +169,7 @@ ThreeVis.prototype.render = function() {
             //options.position.normalize();
             //options.position.multiplyScalar( Math.random() * 5 + 450 );
 
-            options.position.x =   (Math.random() * 3 - 1)*height*tick;
+            options.position.x =   (Math.random() * 2.5 - 1)*height*tick;
             options.position.y = -((Math.random() * 1.4 - 1)*height);
             //options.position.z = (Math.random() * 1  - 1);
 
