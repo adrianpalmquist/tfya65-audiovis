@@ -18,7 +18,6 @@ var ThreeVis = function(analyser) {
 ThreeVis.prototype.init = function() {
 
     //Init 3D Scene
-
     container = document.getElementById('visualiser');
 
     this.windowHalfX = container.offsetWidth / 2;
@@ -31,6 +30,7 @@ ThreeVis.prototype.init = function() {
     camera.position.z = 200;
 
     scene = new THREE.Scene();
+
 
     // The GPU Particle system extends THREE.Object3D, and so you can use it
     // as you would any other scene graph component.  Particle positions will be
@@ -169,9 +169,9 @@ ThreeVis.prototype.render = function() {
             //options.position.normalize();
             //options.position.multiplyScalar( Math.random() * 5 + 450 );
 
-            options.position.x =   (Math.random() * 2.5 - 1)*height*tick;
+            options.position.x =   (Math.random() * 2.5 - 1)*height*percent*tick;
             options.position.y = -((Math.random() * 1.4 - 1)*height);
-            //options.position.z = (Math.random() * 1  - 1);
+            options.position.z = -((Math.random() * 2.5  - 1)*height);
 
             options.position.normalize();
             options.position.multiplyScalar((height));
