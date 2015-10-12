@@ -143,6 +143,10 @@ ThreeVis.prototype.render = function() {
 	  //camera.position.z = Math.sin( timer ) * 200;
     //camera.position.y = Math.sin( timer ) * 200;
 
+    var d = new Date();
+    var n = d.getTime();
+    var t = 1000 * 60;
+    var y = Math.round(n / minutes);
 
     var delta = clock.getDelta() * spawnerOptions.timeScale;
     tick += delta;
@@ -155,6 +159,7 @@ ThreeVis.prototype.render = function() {
     if (delta > 0) {
 
         for (var i = 0; i < this.AMOUNTX; i++) {
+
             var value = this.musicData[i];
             var percent = value / 255;
             var height = this.windowHalfY * percent;
@@ -164,8 +169,8 @@ ThreeVis.prototype.render = function() {
             //options.position.normalize();
             //options.position.multiplyScalar( Math.random() * 5 + 450 );
 
-            options.position.x = (Math.random() * 3 - 1)*height*tick;
-            options.position.y = -((Math.random() * 0.5 - 1)*height);
+            options.position.x =   (Math.random() * 3 - 1)*height*tick;
+            options.position.y = -((Math.random() * 1.4 - 1)*height);
             //options.position.z = (Math.random() * 1  - 1);
 
             options.position.normalize();
