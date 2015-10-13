@@ -135,27 +135,13 @@ ThreeVis.prototype.render = function() {
 
     //Get Music Data
     this.analyser.getByteFrequencyData(this.musicData);
-    camera.zoom = 30;
-    camera.updateProjectionMatrix();
     var timer = Date.now() * 0.0001;
-
-		//camera.position.x = Math.cos( timer ) * 200;
-	  //camera.position.z = Math.sin( timer ) * 200;
-    //camera.position.y = Math.sin( timer ) * 200;
-
-    var d = new Date();
-    var n = d.getTime();
-    var minutes = 1000 * 60;
-    var y = Math.round(n / minutes);
-
-    var max = 900;
-    min = 0
 
     var delta = clock.getDelta() * spawnerOptions.timeScale;
     tick += delta;
 
-    camera.zoom = 2;
-    camera.updateProjectionMatrix();
+    var max = 500;
+    min = 0
 
     if (tick < 0) tick = 0;
 
@@ -166,23 +152,14 @@ ThreeVis.prototype.render = function() {
             var value = this.musicData[i];
             var percent = value / 255;
             var height = this.windowHalfY * percent;
-            //options.position.x = Math.random() * 30 - 1;;
-            //options.position.y = height;
 
-            //options.position.normalize();
-            //options.position.multiplyScalar( Math.random() * 5 + 450 );
-
-            options.position.x =   (Math.random() * 2.5 - 1)*height*(Math.floor(Math.random()*(max-min+1)+min) );
-            options.position.y = ((Math.random() * 1.4 - 1)*height)*(tick*0.1);
-            options.position.z = -((Math.random() * 2.5  - 1)*height);
-
-
-            //options.position.x =   (Math.random() * 2.5 - 1)*height*tick;
-            //options.position.y = -((Math.random() * 1.0 - 1)*height);
-
+            options.position.x =   (Math.random()  * 2.5  -
+            1)*height*(Math.floor(Math.random()*(max-min+1)+min));
+            options.position.y =   ((Math.random() * 1.4  - 1)*height);
+            options.position.z =  -((Math.random() * 2.5  - 1)*height);
 
             options.position.normalize();
-            options.position.multiplyScalar((height));
+            options.position.multiplyScalar((tick*0.02)*height);
 
             particleSystem.spawnParticle(options);
         }
