@@ -1,24 +1,27 @@
+'use strict';
+
 var AudioHandler = function(analyser, buffer) {
     //console.log(typeof(analyser));
     this.analyser = analyser;
     this.source = audioCtx.createBufferSource();
     this.buffer = buffer;
     this.bufferDuration = this.buffer.duration;
-    console.log(this.analyser);
+    window.console.log(this.analyser);
     this.source.buffer = this.buffer;
     this.source.connect(this.analyser);
     this.analyser.connect(audioCtx.destination);
     this.currentNode = this.source;
     this.firstEffect = null;
-    var DEFAULT_GAIN = 25;
-    var DEFAULT_Q = 5;
+    this.DEFAULT_GAIN = 0.5;
+    this.DEFAULT_FILTER_GAIN = 12.0;
+    this.DEFAULT_Q = 20.0;
 
     this.isPlaying = false;
     this.startTime = 0;
     this.startOffset = 0;
 
-    this.filterGain = DEFAULT_GAIN;
-    this.filterQ = DEFAULT_Q;
+    this.filterGain = this.DEFAULT_FILTER_GAIN;
+    this.filterQ = this.DEFAULT_Q;
     this.convolverSound = null;
 
     var that = this;
@@ -30,37 +33,23 @@ var AudioHandler = function(analyser, buffer) {
 
     bufferLoader.load();
 
-
-
-
     // eventlistener, bind to changefilter
 
-    var filterSelect = document.getElementById("filter");
+    var filterSelect = document.getElementById('filter');
     var temp = this;
-    filterSelect.addEventListener("change", function()  {
+    filterSelect.addEventListener('change', function()  {
         temp.changeFilter(filterSelect.value);
     });
-
-    // var gainSelect = document.getElementById("gainControl");
-    // gainSelect.addEventListener("change", function() {
-    //     temp.changeGain(gainSelect.value);
-    // });
-
-    // var qSelect = document.getElementById("qSelect");
-    // gainSelect.addEventListener("change", function() {
-    //     temp.changeQ(qSelect.value);
-    // });
-
-    //console.log(filterSelect.value);
 
 
 };
 
 AudioHandler.prototype.changeBuffer = function(buffer) {
-    this.togglePlayback();
     this.buffer = buffer;
+    this.bufferDuration = this.buffer.duration;
     this.startTime = 0;
     this.startOffset = 0;
+    this.togglePlayback();
     this.togglePlayback();
 };
 
@@ -70,10 +59,17 @@ AudioHandler.prototype.loadConvolverSound = function(buffers) {
 
 
 AudioHandler.prototype.togglePlayback = function() {
+
     if (this.isPlaying) {
         // Stop playback
         this.source[this.source.stop ? 'stop' : 'noteOff'](0);
-        this.startOffset += audioCtx.currentTime - this.startTime;
+
+        if(this.source.buffer === this.buffer) {
+            this.startOffset += audioCtx.currentTime - this.startTime;
+        } else {
+            this.startOffset = 0;
+        }
+
     } else {
         // start playback
         this.startTime = audioCtx.currentTime;
@@ -102,23 +98,21 @@ AudioHandler.prototype.applyEffect = function(effect) {
     this.currentNode.disconnect();
     this.currentNode.connect(effect);
     this.currentNode = effect;
-    console.log(this.currentNode);
+    window.console.log(this.currentNode);
     this.currentNode.connect(this.analyser);
-};
-
-AudioHandler.prototype.removeEffect = function(effectName) {
-    this.currentNode.disconnect(parent);
-    this.child.connect(parent.context);
 };
 
 AudioHandler.prototype.resetEffects = function() {
     this.firstEffect = null;
+    this.filterGain = this.DEFAULT_FILTER_GAIN;
+    this.filterQ = this.DEFAULT_Q;
     this.source.disconnect();
     this.source.connect(this.analyser);
     this.currentNode = this.source;
 };
 
 AudioHandler.prototype.changeFilter = function(currentFilter) {
+    window.console.log("Changing filter");
     this.resetEffects();
     switch (currentFilter) {
         case 'lowpass':
@@ -133,6 +127,9 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
         case 'voiceboost':
             this.addBiQuadFilter('peaking', 3000);
             break;
+        case 'trebleboost':
+            this.addBiQuadFilter('highshelf', 4000);
+            break;
         case 'telephone':
             this.addBiQuadFilter('bandpass', 2000);
             break;
@@ -144,7 +141,7 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
             break;
         default:
             this.resetEffects();
-            console.log('No filter selected');
+            window.console.log('No filter selected');
             break;
     }
 };
@@ -160,16 +157,21 @@ AudioHandler.prototype.changeQ = function(q) {
 AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency) {
     var filter = audioCtx.createBiquadFilter();
     filter.type = type;
-    filter.gain = this.filterGain;
+    filter.gain.value = this.filterGain;
     filter.Q.value = 5;
     filter.frequency.value = cutoffFrequency;
     this.applyEffect(filter);
 };
 
+AudioHandler.prototype.addGainNode = function() {
+    var gainNode = audioCtx.createGain();
+    gainNode.gain.value = this.DEFAULT_GAIN;
+    this.applyEffect(gainNode);
+};
 
 AudioHandler.prototype.addDistortion = function() {
     var distortion = audioCtx.createWaveShaper();
-    distortion.curve = this.makeDistortionCurve(400);
+    distortion.curve = this.makeDistortionCurve(20);
     distortion.oversample = '4x';
     this.applyEffect(distortion);
 };
@@ -189,7 +191,7 @@ AudioHandler.prototype.makeDistortionCurve = function(amount) {
 };
 
 
-AudioHandler.prototype.addConvolver = function(first_argument) {
+AudioHandler.prototype.addConvolver = function() {
     var convolver = audioCtx.createConvolver();
     convolver.buffer = this.convolverSound;
     this.applyEffect(convolver);

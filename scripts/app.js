@@ -1,4 +1,6 @@
-var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+"use strict";
+
+var audioCtx = new window.AudioContext();
 
 window.onload = function() {
     var app = new App();
@@ -16,11 +18,12 @@ var App = function() {
     this.analyser.smoothingTimeConstant = 0.9;
     this.analyser.fftSize = 2048;
 
-    this.threeVis = new ThreeVis(this.analyser);
+    this.threeVis = null;
 
     var fileUpload = document.getElementById("fileUpload");
     var temp = this;
     fileUpload.addEventListener("change", function()  {
+        window.console.log(fileUpload.files[0]);
         temp.loadUploadedFile(fileUpload.files[0]);
     });
 
@@ -37,8 +40,8 @@ App.prototype.loadUploadedFile = function(file) {
     var that = this;
     reader.onload = function(e) {
         audioCtx.decodeAudioData(e.target.result, function(buffer) {
-            console.log(buffer);
-            var array = new Array();
+            window.console.log(buffer);
+            var array = [];
             array[0] = buffer;
             that.finishedLoading(array);
         });
@@ -50,7 +53,7 @@ App.prototype.loadDefault = function() {
 
     var that = this;
     var bufferLoader = new BufferLoader(audioCtx, [
-            'sounds/chrono.mp3',
+            "sounds/chrono.mp3",
         ],
         that.finishedLoading.bind(that)
     );
@@ -63,7 +66,8 @@ App.prototype.finishedLoading = function(bufferList) {
     if (this.audioHandler === null) {
         this.audioHandler = new AudioHandler(this.analyser, bufferList[0]);
         var tempAudio = this.audioHandler;
-        var tempVis = this.visualiser;
+        //tempAudio.addGainNode();
+        this.threeVis = new ThreeVis(this.analyser);
         var toggle = document.getElementById("toggle");
         var togglespan = document.getElementById("togglespan");
         toggle.addEventListener("click", function() {
