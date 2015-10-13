@@ -37,7 +37,7 @@ ThreeVis.prototype.init = function() {
     // relative to the position of the particle system, but you will probably only need one
     // system for your whole scene
     particleSystem = new THREE.GPUParticleSystem({
-        maxParticles: 250000
+        maxParticles: 500000
     });
     scene.add(particleSystem);
 
@@ -48,17 +48,17 @@ ThreeVis.prototype.init = function() {
         velocity: new THREE.Vector3(),
         velocityRandomness: .5,
         color: 0xaa88ff,
-        colorRandomness: .2,
-        turbulence: .4,
-        lifetime: 1,
-        size: 6,
+        colorRandomness: .3,
+        turbulence: .5,
+        lifetime: 2,
+        size: 5,
         sizeRandomness: 1
     };
 
     spawnerOptions = {
-        spawnRate: 10000,
-        horizontalSpeed: 1.5,
-        verticalSpeed: 1.33,
+        spawnRate: 20000,
+        horizontalSpeed: 1.2,
+        verticalSpeed: 1.5,
         timeScale: 1
     }
 
