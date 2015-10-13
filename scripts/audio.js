@@ -122,7 +122,7 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
             this.addBiQuadFilter('highpass', 5000);
             break;
         case 'bassboost':
-            this.addBiQuadFilter('lowshelf', 300);
+            this.addBiQuadFilter('lowshelf', 440);
             break;
         case 'voiceboost':
             this.addBiQuadFilter('peaking', 3000);

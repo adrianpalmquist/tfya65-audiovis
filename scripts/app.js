@@ -39,12 +39,32 @@ App.prototype.loadUploadedFile = function(file) {
     var reader = new FileReader();
     var that = this;
     reader.onload = function(e) {
-        audioCtx.decodeAudioData(e.target.result, function(buffer) {
-            window.console.log(buffer);
-            var array = [];
-            array[0] = buffer;
-            that.finishedLoading(array);
-        });
+        if (file.type === "audio/flac") {
+            var asset = AV.Asset.fromBuffer(e.target.result);
+
+            asset.decodeToBuffer(function(buffer) {
+                var audioBuffer = audioCtx.createBuffer(2, buffer.length, audioCtx.sampleRate);
+                var leftChannel = audioBuffer.getChannelData(0);
+                var rightChannel = audioBuffer.getChannelData(1);
+                var inputIndex = 0;
+                for (var i = 0; i < buffer.length;) {
+                    leftChannel[inputIndex] = buffer[i++];
+                    rightChannel[inputIndex] = buffer[i++];
+                    inputIndex++;
+                }
+                var array = [];
+                array[0] = audioBuffer;
+                that.finishedLoading(array);
+            });
+        } else {
+            audioCtx.decodeAudioData(e.target.result, function(buffer) {
+                window.console.log(buffer);
+                var array = [];
+                array[0] = buffer;
+                that.finishedLoading(array);
+            });
+        }
+
     };
     reader.readAsArrayBuffer(file);
 };
