@@ -1,11 +1,15 @@
 'use strict';
 
+/**
+ * Audio frequency visualiser
+ * @param {AnalyserNode} analyser  Analyser to use
+ */
 var ThreeVis = function(analyser) {
-    this.windowHalfX = window.innerWidth / 2;
-    this.windowHalfY = window.innerHeight / 2;
+    this.visHalfWidth = this.visHalfHeight = null;
     this.camera = this.scene = this.renderer = this.container = this.stats = null;
     this.analyser = analyser;
-    this.musicData = new Uint8Array(this.analyser.frequencyBinCount);
+    // frequencyBinCount is half of the fftSize of the analyser
+    this.audioData = new Uint8Array(this.analyser.frequencyBinCount);
     this.AMOUNTX = this.AMOUNTY = this.analyser.frequencyBinCount;
     this.clock = new THREE.Clock(true);
     this.tick = 0;
@@ -15,17 +19,20 @@ var ThreeVis = function(analyser) {
     this.animate();
 };
 
-/* FUNCTIONS */
+/**
+ * Initializes the visualiser
+ * @return {void}
+ */
 ThreeVis.prototype.init = function() {
 
-    //Init 3D Scene
-
+    // Get container element from HTML
     this.container = document.getElementById('visualiser');
 
-    this.windowHalfX = this.container.offsetWidth / 2;
-    this.windowHalfY = this.container.offsetHeight / 2;
+    // Set vis dimensions to fit the container
+    this.visHalfWidth = this.container.offsetWidth / 2;
+    this.visHalfHeight = this.container.offsetHeight / 2;
 
-    this.camera = new THREE.OrthographicCamera(-this.windowHalfX, this.windowHalfX, this.windowHalfY, -this.windowHalfY, 1, 1000);
+    this.camera = new THREE.OrthographicCamera(-this.visHalfWidth, this.visHalfWidth, this.visHalfHeight, -this.visHalfHeight, 1, 1000);
 
     this.camera.position.x = 0;
     this.camera.position.y = 0;
@@ -43,7 +50,7 @@ ThreeVis.prototype.init = function() {
 
     this.scene.add(this.particleSystem);
 
-    // options passed during each spawned
+    // Options that are passed to each spawned particle
     this.options = {
         position: new THREE.Vector3(),
         positionRandomness: 0.3,
@@ -57,6 +64,7 @@ ThreeVis.prototype.init = function() {
         sizeRandomness: 1
     };
 
+    // Options controlling the particle spawner
     this.spawnerOptions = {
         spawnRate: 20000,
         horizontalSpeed: 1.2,
@@ -65,15 +73,19 @@ ThreeVis.prototype.init = function() {
     };
 
 
-    //Create container and set renderer
+    // Create renderer and set correct size
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
     this.renderer.setClearColor(0x00000, 1);
 
+    // Make the camera look up a bit so that the visualisation doesn't clip.
+    var newPos = new THREE.Vector3(0, 100, 0);
+    newPos.add(this.scene.position);
 
-    this.camera.lookAt(this.scene.position);
+    this.camera.lookAt(newPos);
 
+    // Add the renderer to the container
     this.container.appendChild(this.renderer.domElement);
 
     //Show FPS from https://github.com/mrdoob/stats.js/
@@ -83,48 +95,26 @@ ThreeVis.prototype.init = function() {
     this.stats.domElement.style.right = '0px';
     this.container.appendChild(this.stats.domElement);
 
-    //Moving camera
-    document.addEventListener('mousemove', this.onDocumentMouseMove, false);
-    document.addEventListener('touchstart', this.onDocumentTouchStart, false);
-    document.addEventListener('touchmove', this.onDocumentTouchMove, false);
-
+    // Handle resizing the window
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
+
+    window.console.log("Visualiser loaded.");
+
 };
 
 //From http://learningthreejs.com/data/THREEx/docs/THREEx.WindowResize.html
 ThreeVis.prototype.onWindowResize = function() {
 
-    this.windowHalfY = this.container.offsetHeight / 2;
-    this.windowHalfX = this.container.offsetWidth / 2;
+    this.visHalfHeight = this.container.offsetHeight / 2;
+    this.visHalfWidth = this.container.offsetWidth / 2;
 
-    //Set camera aspect ratio and update Projection Matrix
+    // Update camera and renderer
     this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
 
-
 };
 
-ThreeVis.prototype.onDocumentMouseMove = function(event) {
-    this.mouseX = event.clientX - this.windowHalfX;
-    this.mouseY = event.clientY - this.windowHalfY;
-};
-
-ThreeVis.prototype.onDocumentTouchStart = function(event) {
-    if (event.touches.length === 1) {
-        event.preventDefault();
-        this.mouseX = event.touches[0].pageX - this.windowHalfX;
-        this.mouseY = event.touches[0].pageY - this.windowHalfY;
-    }
-};
-
-ThreeVis.prototype.onDocumentTouchMove = function(event) {
-    if (event.touches.length === 1) {
-        event.preventDefault();
-        this.mouseX = event.touches[0].pageX - this.windowHalfX;
-        this.mouseY = event.touches[0].pageY - this.windowHalfY;
-    }
-};
 
 ThreeVis.prototype.animate = function() {
     requestAnimationFrame(this.animate.bind(this));
@@ -132,11 +122,15 @@ ThreeVis.prototype.animate = function() {
     this.stats.update();
 };
 
+/**
+ * Rendering function for the visualiser
+ */
 ThreeVis.prototype.render = function() {
 
-    //Get Music Data
-    this.analyser.getByteFrequencyData(this.musicData);
+    // Get audio data at current time
+    this.analyser.getByteFrequencyData(this.audioData);
 
+    // Calculate delta and increase tick
     var delta = this.clock.getDelta() * this.spawnerOptions.timeScale;
     this.tick += delta;
 
@@ -144,10 +138,11 @@ ThreeVis.prototype.render = function() {
 
     if (delta > 0) {
 
+        // Spawn particles at location determined by frequency and amplitude
         for (var i = 0; i < this.AMOUNTX; i++) {
-            var value = this.musicData[i];
+            var value = this.audioData[i];
             var percent = value / 255;
-            var height = this.windowHalfY * percent;
+            var height = this.visHalfHeight * percent;
             this.options.position.x = i - ((this.AMOUNTX) / 2);
             this.options.position.y = height;
             this.particleSystem.spawnParticle(this.options);
@@ -156,5 +151,6 @@ ThreeVis.prototype.render = function() {
 
     this.particleSystem.update(this.tick);
 
+    // Render current content to screen
     this.renderer.render(this.scene, this.camera);
 };
