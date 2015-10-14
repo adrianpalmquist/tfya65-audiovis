@@ -57,6 +57,7 @@ App.prototype.loadUploadedFile = function(file) {
                 PCM audio and pass it to the specified function
              */
             asset.decodeToBuffer(function(buffer) {
+                window.console.log("Audio decoded.");
                 /* Copy the interleaved PCM audio from the Float32Array to a new AudioBuffer */
                 var audioBuffer = audioCtx.createBuffer(2, buffer.length, audioCtx.sampleRate);
                 var leftChannel = audioBuffer.getChannelData(0);
@@ -75,6 +76,7 @@ App.prototype.loadUploadedFile = function(file) {
         // Else use the AudioContext to decode. Supported formats depends on the browser
         } else {
             audioCtx.decodeAudioData(e.target.result, function(buffer) {
+                window.console.log("Audio decoded.");
                 var array = [];
                 array[0] = buffer;
                 that.finishedLoading(array);

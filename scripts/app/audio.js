@@ -19,7 +19,7 @@ var AudioHandler = function(analyser, buffer) {
     
     this.DEFAULT_GAIN = 0.5; // Default gain for the gainNode in amplitude
     this.DEFAULT_FILTER_GAIN = 6.0; // Default gain for filters in dB
-    this.DEFAULT_Q = 15; // Default Q value for filters
+    this.DEFAULT_Q = 6; // Default Q value for filters
 
     this.isPlaying = false; // Start paused
     this.startTime = 0;
@@ -132,16 +132,16 @@ AudioHandler.prototype.changeFilter = function(currentFilter) {
     this.resetEffects();
     switch (currentFilter) {
         case 'lowpass':
-            this.addBiQuadFilter('lowpass', 500);
+            this.addBiQuadFilter('lowpass', 500, 1, 1);
             break;
         case 'highpass':
-            this.addBiQuadFilter('highpass', 5000);
+            this.addBiQuadFilter('highpass', 5000, 1, 1);
             break;
         case 'bassboost':
             this.addBiQuadFilter('lowshelf', 440);
             break;
         case 'voiceboost':
-            this.addBiQuadFilter('peaking', 3000);
+            this.addBiQuadFilter('peaking', 3000, 9, 1);
             break;
         case 'trebleboost':
             this.addBiQuadFilter('highshelf', 4000);
@@ -175,11 +175,11 @@ AudioHandler.prototype.changeQ = function(q) {
  * @param {string} type - Name of the type of filter that should be created
  * @param {float} cutoffFrequency 
  */
-AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency) {
+AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency, q, gain) {
     var filter = audioCtx.createBiquadFilter();
     filter.type = type;
-    filter.gain.value = this.filterGain;
-    filter.Q.value = this.filterQ;
+    filter.gain.value = gain || this.filterGain;
+    filter.Q.value = q || this.filterQ;
     filter.frequency.value = cutoffFrequency;
     this.applyEffect(filter);
 };
