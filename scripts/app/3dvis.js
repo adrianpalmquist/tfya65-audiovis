@@ -2,7 +2,7 @@
 
 /**
  * Audio frequency visualiser
- * @param {AnalyserNode} analyser  Analyser to use
+ * @param {AnalyserNode} analyser - Analyser to use
  */
 var ThreeVis = function(analyser) {
     this.visHalfWidth = this.visHalfHeight = null;

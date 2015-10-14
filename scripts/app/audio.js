@@ -2,8 +2,8 @@
 
 /**
  * Audio handler for the visualiser. Manages playback and effects.
- * @param {AnalyserNode} analyser   Analyser to use
- * @param {AudioBuffer} buffer      Buffer to initialize the AudioHandler with
+ * @param {AnalyserNode} analyser - Analyser to use
+ * @param {AudioBuffer} buffer - Buffer to initialize the AudioHandler with
  */
 var AudioHandler = function(analyser, buffer) {
     this.analyser = analyser;
@@ -54,7 +54,7 @@ var AudioHandler = function(analyser, buffer) {
 
 /**
  * Change AudioBuffer
- * @param  {AudioBuffer} buffer     New AudioBuffer to use
+ * @param  {AudioBuffer} buffer - New AudioBuffer to use
  */
 AudioHandler.prototype.changeBuffer = function(buffer) {
     this.buffer = buffer;
@@ -172,7 +172,7 @@ AudioHandler.prototype.changeQ = function(q) {
 
 /**
  * Add a new BiquadFilter to the processing chain
- * @param {string} type           Name of the type of filter that should be created
+ * @param {string} type - Name of the type of filter that should be created
  * @param {float} cutoffFrequency 
  */
 AudioHandler.prototype.addBiQuadFilter = function(type, cutoffFrequency) {
