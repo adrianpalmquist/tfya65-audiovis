@@ -6,18 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TFYA65 - Ljudprojekt</title>
-    <link href="css/main.css" rel="stylesheet">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="scripts/three.min.js"></script>
-    <script src="scripts/Projectors.js"></script>
-    <script src="scripts/CanvasRenderer.js"></script>
-    <script src="scripts/Stats.js"></script>
-    <script src="scripts/buffer-loader.js"></script>
-    <script src="scripts/audio.js"></script>
-    <script src="scripts/3dvis.js"></script>
-    <script src="scripts/visualiser.js"></script>
-    <script src="scripts/app.js"></script>
+    <link type="text/css" href="css/main.css" rel="stylesheet">
+    <!-- Bootstrap css -->
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Dependencies -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="scripts/vendor/bootstrap.min.js"></script>
+    <script src="scripts/vendor/aurora.js"></script>
+    <script src="scripts/vendor/flac.js"></script>
+    <script src="scripts/vendor/three.min.js"></script>
+    <script src="scripts/vendor/Projectors.js"></script>
+    <script src="scripts/vendor/Stats.js"></script>
+    <script src="scripts/vendor/buffer-loader.js"></script>
+    <script src="scripts/vendor/GPUParticleSystem.js" ></script>
+    <!-- App scripts -->
+    <script src="scripts/app/audio.js"></script>
+    <script src="scripts/app/3dvis.js"></script>
+    <script src="scripts/app/app.js"></script>
 </head>
 
 <body>
@@ -46,11 +52,12 @@
                     <select name="filter" class="form-control" id="filter">
                         <option value="off">Off</option>
                         <option value="distortion">Distortion</option>
-                        <option value="convolver">Reverb</option>
+                        <option value="convolver">Reverb (Church)</option>
                         <option value="bassboost">Bass Boost</option>
+                        <option value="trebleboost">Treble Boost</option>
                         <option value="voiceboost">Voice Boost</option>
                         <option value="lowpass">Lowpass filter (500 Hz)</option>
-                        <option value="highpass">Highpass filter (1000 Hz)</option>
+                        <option value="highpass">Highpass filter (5000 Hz)</option>
                         <option value="telephone">Bandpass (2000 Hz)</option>
                     </select>
                 </div>
@@ -58,10 +65,7 @@
         </div>
         <div id="visualiser"></div>
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    
 </body>
 
 </html>
