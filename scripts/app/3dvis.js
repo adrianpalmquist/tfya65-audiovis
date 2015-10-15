@@ -32,8 +32,12 @@ ThreeVis.prototype.init = function() {
     this.visHalfWidth = this.container.offsetWidth / 2;
     this.visHalfHeight = this.container.offsetHeight / 2;
 
-    this.camera = new THREE.OrthographicCamera(-this.visHalfWidth, this.visHalfWidth, this.visHalfHeight, -this.visHalfHeight, 1, 1000);
+    var initCamHalfWidth = (this.AMOUNTX + 200) / 2;
+    var initCamHalfHeight = (this.AMOUNTX * 16/10) / 2;
 
+    this.camera = new THREE.OrthographicCamera(-initCamHalfWidth, initCamHalfWidth, this.visHalfHeight, -this.visHalfHeight, 1, 1000);
+    this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
+    
     this.camera.position.x = 0;
     this.camera.position.y = 0;
     this.camera.position.z = 200;
