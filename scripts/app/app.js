@@ -92,7 +92,7 @@ App.prototype.loadDefault = function() {
 
     var that = this;
     var bufferLoader = new BufferLoader(audioCtx, [
-            "sounds/chrono.mp3",
+            "sounds/default.mp3",
         ],
         that.finishedLoading.bind(that)
     );
