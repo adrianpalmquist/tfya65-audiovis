@@ -49,7 +49,8 @@ App.prototype.loadUploadedFile = function(file) {
     var that = this;
     reader.onload = function(e) {
         // If flac, use aurora.js and flac.js to decode
-        if (file.type === "audio/flac") {
+        console.log(file);
+        if (file.type === "audio/flac" || file.type === 'audio/x-flac' ) {
             var asset = AV.Asset.fromBuffer(e.target.result);
 
             /*
