@@ -27,7 +27,7 @@ ThreeVis.prototype.init = function() {
 
     camera.position.x = 0;
     camera.position.y = 0;
-    camera.position.z = 200;
+    camera.position.z = 800;
 
     scene = new THREE.Scene();
 
@@ -52,8 +52,8 @@ ThreeVis.prototype.init = function() {
         colorRandomness: 0*Math.random(),
         turbulence: .0,
         lifetime: 1,
-        size: 8,
-        sizeRandomness: 3
+        size: 5,
+        sizeRandomness: 0
     };
 
     spawnerOptions = {
@@ -153,13 +153,12 @@ ThreeVis.prototype.render = function() {
             var percent = value / 255;
             var height = this.windowHalfY * percent;
 
-            options.position.x =   (Math.random()  * 2.5  -
-            1)*height*(Math.floor(Math.random()*(max-min+1)+min));
-            options.position.y =   ((Math.random() * 1.4  - 1)*height);
+            options.position.x =   (Math.random()  * 2.5  - 1)*height*(Math.floor(Math.random()*(max-min+1)+min))*percent;
+            options.position.y =   ((Math.random() * (height)  - height/2));
             options.position.z =  -((Math.random() * 2.5  - 1)*height);
 
             options.position.normalize();
-            options.position.multiplyScalar((tick*0.02)*height);
+            options.position.multiplyScalar(2*height);
 
             particleSystem.spawnParticle(options);
         }
